@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SECURE TERMINAL | ACCESS RESTRICTED</title>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&family=Dancing+Script:wght@700&family=Playfair+Display:ital,wght@0,400;1,700&family=Noto+Nastaliq+Urdu&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        :root { --sea-green: #004d40; --maroon: #800000; --gold: #c5a059; --cream: #f5f5dc; }
+        body, html { margin: 0; padding: 0; background-color: #051a17; color: var(--cream); font-family: 'Playfair Display', serif; overflow: hidden; height: 100%; }
+        
+        #intro-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 1000; transition: all 1.5s ease; }
+        .system-message { font-family: 'Courier Prime', monospace; color: #00ff00; font-size: 1.1rem; text-align: center; margin-bottom: 20px; line-height: 1.5; }
+        .formal-name { font-size: clamp(1rem, 3vw, 1.8rem); letter-spacing: 5px; color: var(--gold); text-align: center; opacity: 0; transform: translateY(-20px); padding: 20px; border: 2px solid var(--maroon); background: #0a0a0a; transition: all 2s ease; }
+        .btn-start { margin-top: 50px; padding: 12px 35px; border: 2px solid #00ff00; background: transparent; color: #00ff00; cursor: pointer; font-family: 'Courier Prime', monospace; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; }
+        .btn-start:hover { background: #00ff00; color: black; box-shadow: 0 0 20px #00ff00; }
+        
+        #main-content { display: none; text-align: center; padding: 40px 20px; background: radial-gradient(circle, var(--sea-green) 0%, #022b24 100%); min-height: 100vh; overflow-y: auto; }
+        .photo-frame { position: relative; display: inline-block; margin-bottom: 20px; }
+        .birthday-girl-photo { width: 250px; height: 250px; border-radius: 50%; object-fit: cover; border: 5px solid var(--maroon); box-shadow: 0 0 30px rgba(0,0,0,0.8); }
+        .hero-text { font-size: clamp(2.5rem, 8vw, 5rem); font-family: 'Dancing Script', cursive; color: var(--gold); margin: 10px 0; }
+        .urdu-text { font-family: 'Noto Nastaliq Urdu', serif; font-size: clamp(1.5rem, 4vw, 2.2rem); margin: 25px 0; line-height: 2.8; direction: rtl; }
+        .card-container { max-width: 600px; margin: 30px auto; background: rgba(128, 0, 0, 0.1); padding: 35px; border-radius: 5px; border: 1px solid var(--gold); box-shadow: 0 0 50px rgba(0,0,0,0.6); }
+        .sparkle { position: absolute; width: 4px; height: 4px; background: var(--gold); border-radius: 50%; pointer-events: none; animation: twinkle 3s infinite; }
+        @keyframes twinkle { 0%, 100% { opacity: 0; transform: translateY(0); } 50% { opacity: 1; transform: translateY(-100px); } }
+    </style>
+</head>
+<body>
+
+    <div id="intro-overlay">
+        <div class="system-message" id="status-msg">
+            :: SECURITY TERMINAL ::<br>
+            TARGET: IMSHAL_FATIMA_RECORDS<br>
+            STATUS: [LOCKED UNTIL MARCH 12]
+        </div>
+        <div id="full-name" class="formal-name">
+            ACCESS GRANTED TO:<br><br>
+            IMSHAL FATIMA SAJID FAROOQ WARAICH
+        </div>
+        <button id="access-btn" class="btn-start" onclick="checkTime()">INITIALIZE ACCESS</button>
+    </div>
+
+    <div id="main-content">
+        <div class="photo-frame">
+            <img src="imshal.jpeg" alt="Birthday Girl" class="birthday-girl-photo">
+        </div>
+        <h1 class="hero-text">Happy Birthday, Imshal!</h1>
+        <div class="urdu-text">
+            خدا تمہاری زندگی کو خوشیوں سے بھر دے <br>
+            تم جیو ہزاروں سال
+        </div>
+        <div class="card-container">
+            <h2 style="color: var(--gold); font-style: italic; margin-top: 0;">March 12th, 2026</h2>
+            <p style="line-height: 1.8;">"I couldn't let just anyone see this. The system required your full, legendary name for verification. Even though we are far apart, you're the first thing on my mind today. Happy Birthday, Imshal!"</p>
+            <p style="color: var(--gold); font-size: 1.5rem; margin-bottom: 0;">❤️</p>
+        </div>
+        <p style="color: rgba(245, 245, 220, 0.3); font-size: 0.8rem; margin-top: 40px;">Verification Code: 12-03-2026-LONG-NAME-TEASE</p>
+    </div>
+
+    <script>
+        const DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1481334091646369944/tKT4yteapIdPx00_fTxwo9ryeB6h7UekItZdab-t2xhNbEHZ8AwjUrv5uMBjvlla4djR";
+
+        async function notifyDiscord() {
+            try {
+                await fetch(DISCORD_WEBHOOK, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        username: "Birthday Security Bot",
+                        content: "🚨 **SECURITY BREACH!** Imshal Fatima Sajid Farooq Waraich has bypassed the lock and entered her birthday site! 🚀🎂"
+                    })
+                });
+            } catch (e) { console.log("Webhook failed but site will still work."); }
+        }
+
+        function checkTime() {
+            const now = new Date();
+            // This sets the lock until the very first second of March 12th
+            const birthday = new Date('March 12, 2026 00:00:00');
+
+            if (now < birthday) {
+                alert("ACCESS DENIED: It's still March 11th. Nice try, Imshal! Go to sleep and try again at midnight sharp. 😉");
+                return;
+            }
+
+            // Procedure on Success
+            notifyDiscord();
+            const status = document.getElementById('status-msg');
+            const nameDiv = document.getElementById('full-name');
+            const btn = document.getElementById('access-btn');
+
+            btn.style.display = 'none';
+            status.innerHTML = "BIOMETRIC MATCH FOUND.<br>NOTIFYING ADMINISTRATOR...<br>DECRYPTING CELEBRATION MODULE...";
+            status.style.color = "#c5a059";
+            
+            setTimeout(() => {
+                nameDiv.style.opacity = '1';
+                nameDiv.style.transform = 'translateY(0)';
+                
+                setTimeout(() => {
+                    const overlay = document.getElementById('intro-overlay');
+                    overlay.style.opacity = '0';
+                    overlay.style.transform = 'scale(1.2)';
+                    
+                    setTimeout(() => {
+                        overlay.style.display = 'none';
+                        document.getElementById('main-content').style.display = 'block';
+                        document.body.style.overflow = 'auto';
+                        celebrate();
+                    }, 1500);
+                }, 3500);
+            }, 1000);
+        }
+
+        function celebrate() {
+            var end = Date.now() + (15 * 1000);
+            var colors = ['#800000', '#c5a059', '#ffffff'];
+            (function frame() {
+                confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: colors });
+                confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: colors });
+                if (Date.now() < end) requestAnimationFrame(frame);
+            }());
+            setInterval(createSparkle, 200);
+        }
+
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.classList.add('sparkle');
+            sparkle.style.left = Math.random() * 100 + "vw";
+            sparkle.style.top = Math.random() * 100 + "vh";
+            document.body.appendChild(sparkle);
+            setTimeout(() => { sparkle.remove(); }, 3000);
+        }
+    </script>
+</body>
+</html>
